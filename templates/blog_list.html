@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<h1>Blog List Page</h1>
+<h4>Blog soni: {{ blog_counts }}</h4>
+<hr>
+
+{% for blog in blogs %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h5>
+    </div>
+    <img src="{{ blog.img.url }}" class="card-img-top" alt="...">
+    <div class="card-body">
+        <p class="card-text">{{ blog.description.html|safe |truncatewords:40 }}</p>
+        <p class="card-text"><small class="text-muted">{{ blog.created_at }}</small></p>
+        <p class="card-text"><small class="text-muted">{{ blog.author.username }}</small></p>
+        <p class="card-text"><small class="text-muted">{{ blog.views }}</small></p>
+        <p class="card-text">
+            <small class="text-muted">
+                {% for tag in blog.tags.all %}
+                    <span>{{ tag.title }}</span>
+                {% endfor %}
+            </small></p>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+
+{% block right %}
+<ul class="list-group">
+    <li class="list-group-item">Category</li>
+    <li class="list-group-item"><a href="{% url 'blog_list' %}">All</a></li>
+    {% for category in categories %}
+    <li class="list-group-item"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+    {% endfor %}
+
+</ul>
+{% endblock %}

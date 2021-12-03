@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+{% for category in categories %}
+<div class="row">
+    <div class="card mb-3 col-md-12" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ category.img.url }}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a>
+                    </h5>
+                    <p class="card-text"> {{ category.description }}</p>
+                    <p class="card-text"><small class="text-muted">Blog soni: {{ category.blog_set.count }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block right %}
+<ul class="list-group">
+    <li class="list-group-item">Category</li>
+    <li class="list-group-item"><a href="{% url 'blog_list' %}">All</a></li>
+    {% for category in categories %}
+    <li class="list-group-item"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
