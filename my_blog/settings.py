@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'django_quill',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -116,11 +117,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-os.path.join(BASE_DIR, 'static'),
-  ]
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = 'blog_list'
+LOGOUT_REDIRECT_URL = 'blog_list'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

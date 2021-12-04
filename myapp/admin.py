@@ -1,13 +1,22 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from . import models
 
+from .forms import MyUserCreationForm, MyUserChangeForm
+from .models import MyUser
 
-@admin.register(models.MyUser)
-class MyUserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email', 'bio', 'img']
-    search_fields = ['username', 'first_name', 'last_name']
+class MyUserAdmin(UserAdmin):
+    add_form = MyUserCreationForm
+    form = MyUserChangeForm
+    model = MyUser
+    list_display = ['username', 'location', 'birth_date','bio']
+    fieldsets = UserAdmin.fieldsets + (
+            (None, {'fields': ('bio','location', 'birth_date', 'img')}),
+    ) #this will allow to change these fields in admin module
 
+
+admin.site.register(MyUser, MyUserAdmin)
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):

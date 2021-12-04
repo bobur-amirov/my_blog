@@ -18,9 +18,24 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'category' %}">Category</a>
         </li>
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#">{{ user.username }}</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile_update' user.id %}">Profile Change</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Register</a>
+        </li>
+        {% endif %}
     </ul>
     <br>
     <br>

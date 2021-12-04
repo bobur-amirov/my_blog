@@ -19,7 +19,8 @@ class Tags(models.Model):
         return self.title
 
 class MyUser(AbstractUser):
-    bio = models.TextField(max_length=100, blank=True)
+    email = models.EmailField(unique=True, null=False, blank=False)
+    bio = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     img = models.ImageField(upload_to='users/', blank=True, null=True)

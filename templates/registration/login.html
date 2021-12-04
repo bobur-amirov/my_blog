@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+Signup - MyBlog
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleInputUser" class="form-label">Username</label>
+                {% render_field form.username type="text" class="form-control" id="exampleInputUser" %}
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                {% render_field form.password type="password" class="form-control" id="exampleInputPassword1" %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
