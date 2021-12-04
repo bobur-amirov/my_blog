@@ -32,5 +32,23 @@
     {% endfor %}
 
 </ul>
+<br>
+<br>
+<br>
+<ul class="list-group">
+    <li class="list-group-item">Top Blogs</li>
+    {% for blog_top in blogs_top %}
+    <li class="list-group-item"><a href="{% url 'blog_detail' blog_top.id %}">{{ blog_top.title }}</a></li>
+    {% endfor %}
+
+</ul>
+<br>
+<br>
+<br>
+<h3>Tags all</h3>
+{% for tag in tags %}
+<span><a href="{% url 'blog_tags' tag.slug %}">{{ tag.name }}</a></span>
+{% endfor %}
+
 
 {% endblock %}

@@ -6,17 +6,19 @@ from . import models
 from .forms import MyUserCreationForm, MyUserChangeForm
 from .models import MyUser
 
+
 class MyUserAdmin(UserAdmin):
     add_form = MyUserCreationForm
     form = MyUserChangeForm
     model = MyUser
-    list_display = ['username', 'location', 'birth_date','bio']
+    list_display = ['username', 'location', 'birth_date', 'bio']
     fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('bio','location', 'birth_date', 'img')}),
-    ) #this will allow to change these fields in admin module
+        (None, {'fields': ('bio', 'location', 'birth_date', 'img')}),
+    )  # this will allow to change these fields in admin module
 
 
 admin.site.register(MyUser, MyUserAdmin)
+
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -24,13 +26,9 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
 
 
-@admin.register(models.Tags)
-class TagsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title']
-    search_fields = ['title', 'description']
-
 class CommentInline(admin.StackedInline):
     model = models.Comment
+
 
 @admin.register(models.Blog)
 class BlogAdmin(admin.ModelAdmin):

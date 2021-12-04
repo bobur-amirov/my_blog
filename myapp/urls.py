@@ -12,4 +12,5 @@ urlpatterns = [
     path('category/<int:pk>', views.CategoryDetailView.as_view(), name='category_detail'),
     path('', views.BlogListView.as_view(), name='blog_list'),
     path('blog/<int:pk>', views.blog_detail_view, name='blog_detail'),
+    path('tags/<slug:tag_slug>', views.TagView.as_view(), name='blog_tags'),
 ]

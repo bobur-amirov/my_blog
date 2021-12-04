@@ -2,25 +2,22 @@
 {% load static %}
 
 {% block body %}
-<h1>Blog List Page</h1>
-<h4>Blog soni: {{ blog_counts }}</h4>
-<hr>
+
 
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="card-title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h5>
+        <h5 class="card-title">{{ blog.title }}</h5>
     </div>
     <img src="{{ blog.img.url }}" class="card-img-top" alt="...">
     <div class="card-body">
-        <h5 class="card-title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h5>
-        <p class="card-text">{{ blog.description.html|safe |truncatewords:40 }}</p>
-        <p class="card-text"><small class="text-muted">{{ blog.created_at }}</small></p>
-        <p class="card-text"><small class="text-muted">{{ blog.author.username }}</small></p>
-        <p class="card-text"><small class="text-muted">{{ blog.views }}</small></p>
+        <p class="card-text">{{ blog.description.html|safe }}</p>
+        <p class="card-text"><small class="text-muted">Date: {{ blog.created_at }}</small></p>
+        <p class="card-text"><small class="text-muted">User: {{ blog.author.username }}</small></p>
+        <p class="card-text"><small class="text-muted">Views: {{ blog.views }}</small></p>
         <p class="card-text">
             <small class="text-muted">
                 {% for tag in blog.tags.all %}
-                    <span>{{ tag.title }}</span>
+                <span><a href="{% url 'blog_tags' tag.slug %}">{{ tag.name }}</a></span>
                 {% endfor %}
             </small></p>
     </div>
@@ -29,23 +26,29 @@
 
 <h1>Comments</h1>
 {% for comment in blog.comment_set.all %}
-    <p>{{ comment.text }}</p>
-    <p>{{ comment.created_at }}</p>
-    <p>{{ comment.user }}</p>
-    <hr>
+<p>{{ comment.text }}</p>
+<p>Date: {{ comment.created_at }}</p>
+<p>User: {{ comment.user }}</p>
+<hr>
 {% endfor %}
 
 <hr>
 
 
 <h1>Comment Add</h1>
-<form method="post" action="" >
-    {% csrf_token %}
-    <textarea type="text", name="comment_text" placeholder="Comment Text"></textarea>
-    <button type="submit">Comment Add</button>
-</form>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                  <textarea type="text"  class="form-control" name="comment_text" placeholder="Comment Text"></textarea>
 
+            </div>
 
+            <button type="submit" class="btn btn-primary">Comment add</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -58,6 +61,28 @@
     {% endfor %}
 
 </ul>
+<br>
+<br>
+<br>
+<ul class="list-group">
+    <li class="list-group-item">Blog <span style="color: red">{{ blog.author }}</span> ga tegishli bloglar</li>
+    {% for blog_author in blogs_author %}
+    {% if blog_author.title != blog.title %}
+    <li class="list-group-item"><a href="{% url 'blog_detail' blog.id %}">{{ blog_author.title }}</a></li>
+    {% endif %}
+    {% endfor %}
+
+</ul>
+
+<br>
+<br>
+<br>
+<h3>Tags all</h3>
+{% for tag in tags %}
+<span><a href="{% url 'blog_tags' tag.slug %}">{{ tag.name }}</a></span>
+{% endfor %}
+
+
 {% endblock %}
 
 

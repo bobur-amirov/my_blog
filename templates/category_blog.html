@@ -16,7 +16,7 @@
     </div>
   </div>
 </div>
-
+<h3>{{ category.name }} ga tegishli bloglar</h3>
 {% for blog in blogs %}
 <div class="card mb-3">
     <div class="card-body">
@@ -25,13 +25,13 @@
     <img src="{{ blog.img.url }}" class="card-img-top" alt="...">
     <div class="card-body">
         <p class="card-text">{{ blog.description.html|safe |truncatewords:40 }}</p>
-        <p class="card-text"><small class="text-muted">{{ blog.created_at }}</small></p>
-        <p class="card-text"><small class="text-muted">{{ blog.author.username }}</small></p>
-        <p class="card-text"><small class="text-muted">{{ blog.views }}</small></p>
+        <p class="card-text"><small class="text-muted">Date: {{ blog.created_at }}</small></p>
+        <p class="card-text"><small class="text-muted">User: {{ blog.author.username }}</small></p>
+        <p class="card-text"><small class="text-muted">Views: {{ blog.views }}</small></p>
         <p class="card-text">
             <small class="text-muted">
                 {% for tag in blog.tags.all %}
-                    <span>{{ tag.title }}</span>
+                <span><a href="{% url 'blog_tags' tag.slug %}">{{ tag.name }}</a></span>
                 {% endfor %}
             </small></p>
     </div>
@@ -42,6 +42,7 @@
 
 
 {% block right %}
+
 <ul class="list-group">
     <li class="list-group-item">Category</li>
     <li class="list-group-item"><a href="{% url 'blog_list' %}">All</a></li>
@@ -50,6 +51,25 @@
     {% endfor %}
 
 </ul>
+
+<br>
+<br>
+<br>
+<ul class="list-group">
+    <li class="list-group-item">Top <span style="color: red"> {{ category.name }}</span></span> Blogs</li>
+    {% for blog_top in blogs_top %}
+    <li class="list-group-item"><a href="{% url 'blog_detail' blog_top.id %}">{{ blog_top.title }}</a></li>
+    {% endfor %}
+
+</ul>
+<br>
+<br>
+<br>
+<h3>Tags all</h3>
+{% for tag in tags %}
+<span><a href="{% url 'blog_tags' tag.slug %}">{{ tag.name }}</a></span>
+{% endfor %}
+
 {% endblock %}
 
 

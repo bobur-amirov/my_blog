@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_quill.fields import QuillField
+from taggit.managers import TaggableManager
 
 
 class Category(models.Model):
@@ -11,12 +12,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Tags(models.Model):
-    title = models.CharField(max_length=50)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.title
 
 class MyUser(AbstractUser):
     email = models.EmailField(unique=True, null=False, blank=False)
@@ -37,11 +32,12 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(MyUser, on_delete=models.SET_NULL, null=True)
-    tags = models.ManyToManyField(Tags)
+    tags = TaggableManager()
     views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
+
 
 class Comment(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)

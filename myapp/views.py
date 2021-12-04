@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
+from taggit.models import Tag
 
 from .forms import MyUserCreationForm, MyUserChangeForm
-from .models import MyUser, Category, Tags, Blog, Comment
+from .models import MyUser, Category, Blog, Comment
 
 
 class SignUpView(CreateView):
@@ -19,13 +20,24 @@ class ProfileUpdateView(UpdateView):
     template_name = 'update_profile.html'
 
 
-class CategoryListView(ListView):
+class TagMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(TagMixin, self).get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+        return context
+
+class CategoryListView(TagMixin,ListView):
     model = Category
     template_name = 'category.html'
     context_object_name = 'categories'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['blogs_top'] = Blog.objects.all().order_by('-views')
+        return context
 
-class CategoryDetailView(DetailView):
+
+class CategoryDetailView(TagMixin,DetailView):
     model = Category
     template_name = 'category_blog.html'
     context_object_name = 'category'
@@ -36,10 +48,11 @@ class CategoryDetailView(DetailView):
         context['blogs'] = Blog.objects.filter(category_id=pk)
         context['blog_count'] = Blog.objects.filter(category_id=pk).count()
         context['categories'] = Category.objects.all()
+        context['blogs_top'] = Blog.objects.filter(category_id=pk).order_by('-views')
         return context
 
 
-class BlogListView(ListView):
+class BlogListView(TagMixin,ListView):
     model = Blog
     template_name = 'blog_list.html'
     context_object_name = 'blogs'
@@ -48,32 +61,21 @@ class BlogListView(ListView):
         context = super().get_context_data(**kwargs)
         context['blog_counts'] = Blog.objects.count()
         context['categories'] = Category.objects.all()
+        context['blogs_top'] = Blog.objects.all().order_by('-views')
         return context
 
 
-# class BlogDetailView(DetailView):
-#     model = Blog
-#     template_name = 'blog_detail.html'
-#     context_object_name = 'blog'
+class TagView(BlogListView):
 
-# def get_context_data(self, **kwargs):
-#     context = super(BlogDetailView, self).get_context_data(**kwargs)
-#     comment_form = CommentCreateView()
-#     context['comment_form'] = comment_form
-#     print(context['comment_form'])
-#     return context
-
-
-# def get_object(self, queryset=None):
-#     blog_obj = super().get_object()
-#     blog_obj.views += 1
-#     blog_obj.save()
-#     return blog_obj
+    def get_queryset(self):
+        return Blog.objects.filter(tags__slug=self.kwargs.get('tag_slug'))
 
 
 def blog_detail_view(request, pk):
     blog = Blog.objects.get(id=pk)
+    blogs_author = Blog.objects.filter(author=blog.author)
     categories = Category.objects.all()
+    tags = Tag.objects.all()
     if request.method == 'POST':
         Comment.objects.create(
             blog=Blog.objects.get(title=blog.title),
@@ -85,5 +87,7 @@ def blog_detail_view(request, pk):
     contecxt = {
         'blog': blog,
         'categories': categories,
+        'blogs_author': blogs_author,
+        'tags':tags,
     }
     return render(request, 'blog_detail.html', contecxt)

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'myapp',
     'django_quill',
     'widget_tweaks',
+    'taggit',
 ]
 
 MIDDLEWARE = [
