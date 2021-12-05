@@ -9,7 +9,7 @@
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="card-title"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></h5>
+        <h5 class="card-title"><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></h5>
         <p class="card-text"> {{ category.description }}</p>
         <p class="card-text"><small class="text-muted">Blog soni: {{ category.blog_set.count }}</small></p>
       </div>
@@ -47,7 +47,7 @@
     <li class="list-group-item">Category</li>
     <li class="list-group-item"><a href="{% url 'blog_list' %}">All</a></li>
     {% for category in categories %}
-    <li class="list-group-item"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+    <li class="list-group-item"><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></li>
     {% endfor %}
 
 </ul>
@@ -58,7 +58,7 @@
 <ul class="list-group">
     <li class="list-group-item">Top <span style="color: red"> {{ category.name }}</span></span> Blogs</li>
     {% for blog_top in blogs_top %}
-    <li class="list-group-item"><a href="{% url 'blog_detail' blog_top.id %}">{{ blog_top.title }}</a></li>
+    <li class="list-group-item"><a href="{% url 'blog_detail' blog_top.slug %}">{{ blog_top.title }}</a></li>
     {% endfor %}
 
 </ul>

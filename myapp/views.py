@@ -44,11 +44,11 @@ class CategoryDetailView(TagMixin,DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')
-        context['blogs'] = Blog.objects.filter(category_id=pk)
-        context['blog_count'] = Blog.objects.filter(category_id=pk).count()
+        slug = self.kwargs.get('slug')
+        context['blogs'] = Blog.objects.filter(category__slug=slug)
+        context['blog_count'] = Blog.objects.filter(category__slug=slug).count()
         context['categories'] = Category.objects.all()
-        context['blogs_top'] = Blog.objects.filter(category_id=pk).order_by('-views')
+        context['blogs_top'] = Blog.objects.filter(category__slug=slug).order_by('-views')
         return context
 
 
@@ -71,8 +71,8 @@ class TagView(BlogListView):
         return Blog.objects.filter(tags__slug=self.kwargs.get('tag_slug'))
 
 
-def blog_detail_view(request, pk):
-    blog = Blog.objects.get(id=pk)
+def blog_detail_view(request, slug):
+    blog = Blog.objects.get(slug=slug)
     blogs_author = Blog.objects.filter(author=blog.author)
     categories = Category.objects.all()
     tags = Tag.objects.all()

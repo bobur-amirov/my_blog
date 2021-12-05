@@ -6,6 +6,7 @@ from taggit.managers import TaggableManager
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
     img = models.ImageField(upload_to='category/')
     description = models.TextField()
 
@@ -24,8 +25,10 @@ class MyUser(AbstractUser):
         return self.username
 
 
+
 class Blog(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
     img = models.ImageField(upload_to='blogs/')
     description = QuillField()
     created_at = models.DateTimeField(auto_now_add=True)

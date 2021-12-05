@@ -9,8 +9,8 @@ urlpatterns = [
     path('profile-update/<int:pk>', views.ProfileUpdateView.as_view(), name='profile_update'),
 
     path('category/', views.CategoryListView.as_view(), name='category'),
-    path('category/<int:pk>', views.CategoryDetailView.as_view(), name='category_detail'),
+    path('category/<slug:slug>', views.CategoryDetailView.as_view(), name='category_detail'),
     path('', views.BlogListView.as_view(), name='blog_list'),
-    path('blog/<int:pk>', views.blog_detail_view, name='blog_detail'),
+    path('blog/<slug:slug>', views.blog_detail_view, name='blog_detail'),
     path('tags/<slug:tag_slug>', views.TagView.as_view(), name='blog_tags'),
 ]

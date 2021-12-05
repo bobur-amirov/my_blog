@@ -9,7 +9,7 @@
 {% for blog in blogs %}
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="card-title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h5>
+        <h5 class="card-title"><a href="{% url 'blog_detail' blog.slug %}">{{ blog.title }}</a></h5>
     </div>
     <img src="{{ blog.img.url }}" class="card-img-top" alt="...">
     <div class="card-body">
@@ -39,7 +39,7 @@
     <li class="list-group-item">Category</li>
     <li class="list-group-item"><a href="{% url 'blog_list' %}">All</a></li>
     {% for category in categories %}
-    <li class="list-group-item"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+    <li class="list-group-item"><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></li>
     {% endfor %}
 
 </ul>
@@ -49,7 +49,7 @@
 <ul class="list-group">
     <li class="list-group-item">Top Blogs</li>
     {% for blog_top in blogs_top %}
-    <li class="list-group-item"><a href="{% url 'blog_detail' blog_top.id %}">{{ blog_top.title }}</a></li>
+    <li class="list-group-item"><a href="{% url 'blog_detail' blog_top.slug %}">{{ blog_top.title }}</a></li>
     {% endfor %}
 
 </ul>

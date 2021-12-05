@@ -57,7 +57,7 @@
     <li class="list-group-item">Category</li>
     <li class="list-group-item"><a href="{% url 'blog_list' %}">All</a></li>
     {% for category in categories %}
-    <li class="list-group-item"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+    <li class="list-group-item"><a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a></li>
     {% endfor %}
 
 </ul>
@@ -68,7 +68,7 @@
     <li class="list-group-item">Blog <span style="color: red">{{ blog.author }}</span> ga tegishli bloglar</li>
     {% for blog_author in blogs_author %}
     {% if blog_author.title != blog.title %}
-    <li class="list-group-item"><a href="{% url 'blog_detail' blog.id %}">{{ blog_author.title }}</a></li>
+    <li class="list-group-item"><a href="{% url 'blog_detail' blog_author.slug %}">{{ blog_author.title }}</a></li>
     {% endif %}
     {% endfor %}
 
