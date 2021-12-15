@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from taggit.models import Tag
 
-from .forms import MyUserCreationForm, MyUserChangeForm, BlogForm
+from .forms import MyUserCreationForm, MyUserChangeForm, BlogForm, CommentForm
 from .models import MyUser, Category, Blog, Comment
 
 
@@ -78,11 +78,15 @@ def blog_detail_view(request, slug):
     categories = Category.objects.all()
     tags = Tag.objects.all()
     if request.method == 'POST':
-        Comment.objects.create(
-            blog=Blog.objects.get(title=blog.title),
-            user=MyUser.objects.get(username=request.user.username),
-            text=request.POST.get('comment_text')
-        )
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form_comment = form.save(commit=False)
+            form_comment.user = request.user
+            form_comment.blog = blog
+            form_comment.save()
+            return redirect('blog_detail', slug=blog.slug)
+    else:
+        form = CommentForm()
     blog.views += 1
     blog.save()
     contecxt = {
@@ -90,6 +94,7 @@ def blog_detail_view(request, slug):
         'categories': categories,
         'blogs_author': blogs_author,
         'tags': tags,
+        'form': form
     }
     return render(request, 'blog_detail.html', contecxt)
 
@@ -111,9 +116,8 @@ class BlogUpdate(UpdateView):
     template_name = 'blog_update.html'
     success_url = reverse_lazy('blog_list')
 
+
 class BlogDelete(DeleteView):
     model = Blog
     template_name = 'blog_delete.html'
     success_url = reverse_lazy('blog_list')
-
-
