@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+Update - MyBlog
+{% endblock %}
+
+{% block body %}
+<h2>Upate - MyBlog</h2>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="" class="form-label">Title</label>
+                {% render_field form.title type="text" class="form-control" id="" %}
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Slug</label>
+                {% render_field form.slug type="text" class="form-control" id="" %}
+            </div>
+              <div class="mb-3">
+                <label for="" class="form-label">Images</label>
+                {% render_field form.img type="file" class="form-control" id="" %}
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Body text</label>
+                {% render_field form.description type="text" class="form-control" id="" %}
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Category</label>
+                {% render_field form.category type="text" class="form-control" id="" %}
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Tags</label>
+                {% render_field form.tags type="text" class="form-control" id="" %}
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Update blog</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

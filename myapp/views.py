@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from taggit.models import Tag
 
-from .forms import MyUserCreationForm, MyUserChangeForm
+from .forms import MyUserCreationForm, MyUserChangeForm, BlogForm
 from .models import MyUser, Category, Blog, Comment
 
 
@@ -26,7 +26,8 @@ class TagMixin(object):
         context['tags'] = Tag.objects.all()
         return context
 
-class CategoryListView(TagMixin,ListView):
+
+class CategoryListView(TagMixin, ListView):
     model = Category
     template_name = 'category.html'
     context_object_name = 'categories'
@@ -37,7 +38,7 @@ class CategoryListView(TagMixin,ListView):
         return context
 
 
-class CategoryDetailView(TagMixin,DetailView):
+class CategoryDetailView(TagMixin, DetailView):
     model = Category
     template_name = 'category_blog.html'
     context_object_name = 'category'
@@ -52,7 +53,7 @@ class CategoryDetailView(TagMixin,DetailView):
         return context
 
 
-class BlogListView(TagMixin,ListView):
+class BlogListView(TagMixin, ListView):
     model = Blog
     template_name = 'blog_list.html'
     context_object_name = 'blogs'
@@ -88,6 +89,31 @@ def blog_detail_view(request, slug):
         'blog': blog,
         'categories': categories,
         'blogs_author': blogs_author,
-        'tags':tags,
+        'tags': tags,
     }
     return render(request, 'blog_detail.html', contecxt)
+
+
+class BlogCreate(CreateView):
+    form_class = BlogForm
+    template_name = 'blog_create.html'
+    success_url = reverse_lazy('blog_list')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+
+        return super().form_valid(form)
+
+
+class BlogUpdate(UpdateView):
+    model = Blog
+    form_class = BlogForm
+    template_name = 'blog_update.html'
+    success_url = reverse_lazy('blog_list')
+
+class BlogDelete(DeleteView):
+    model = Blog
+    template_name = 'blog_delete.html'
+    success_url = reverse_lazy('blog_list')
+
+

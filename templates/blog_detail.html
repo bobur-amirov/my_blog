@@ -19,7 +19,14 @@
                 {% for tag in blog.tags.all %}
                 <span><a href="{% url 'blog_tags' tag.slug %}">{{ tag.name }}</a></span>
                 {% endfor %}
-            </small></p>
+            </small>
+        </p>
+        <p>
+            {% if blog.author.username == user.username %}
+            <a href="{% url 'blog_update' blog.slug %}">Update</a>
+            <a href="{% url 'blog_delete' blog.slug %}">Delete</a>
+            {% endif %}
+        </p>
     </div>
 </div>
 

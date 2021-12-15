@@ -20,7 +20,7 @@
 {% for blog in blogs %}
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="card-title"><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h5>
+        <h5 class="card-title"><a href="{% url 'blog_detail' blog.slug %}">{{ blog.title }}</a></h5>
     </div>
     <img src="{{ blog.img.url }}" class="card-img-top" alt="...">
     <div class="card-body">
