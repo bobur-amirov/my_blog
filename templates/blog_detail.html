@@ -41,27 +41,35 @@
 
 <hr>
 
-
+{% if user.username %}
 <h1>Comment Add</h1>
-<!--<div class="row">-->
-<!--    <div class="col-md-6">-->
-<!--        <form method="post">-->
-<!--            {% csrf_token %}-->
-<!--            <div class="mb-3">-->
-<!--                  <textarea type="text"  class="form-control" name="comment_text" placeholder="Comment Text"></textarea>-->
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                   {{ form.text }}
+            </div>
+            <button type="submit" class="btn btn-primary">Comment add</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<h1>Comment Add</h1>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                   {{ form.text }}
+            </div>
+            <a href="{% url 'login' %}" class="btn btn-primary">Comment add</a>
+        </form>
+    </div>
+</div>
+{% endif %}
 
-<!--            </div>-->
 
-<!--            <button type="submit" class="btn btn-primary">Comment add</button>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-
-<form method="post" action="" >
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Comment Add</button>
-</form>
 {% endblock %}
 
 
